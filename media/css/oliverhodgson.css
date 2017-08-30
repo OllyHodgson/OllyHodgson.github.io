@@ -14,11 +14,10 @@ body {
 	color: #FFFFFF;
 
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	font-weight: 400;
+	font-weight: 300;
 	font-size: 18px;
 	
-	text-transform: uppercase;
-	
+	text-transform: uppercase;	
 	line-height: 1.6;
 }
 
@@ -29,10 +28,12 @@ h2 {
 	letter-spacing: -0.03em;
 }
 
-abbr {
+abbr,
+abbr[title] {
 	cursor: help;
 	padding: 1px;
-
+	border-bottom: none;
+	text-decoration: none;
 }
 	abbr:hover {
 		border-bottom: 1px dotted #617163;
@@ -227,7 +228,6 @@ The content.
 		font-size: 1em;
 		margin: 0;
 		padding: 0;
-		line-height: 1.5;
 	}
 	.content a {
 		font-size: 1em;
@@ -235,6 +235,7 @@ The content.
 	
 	.content h3,
 	.content h4 {
+		font-weight: 600;
 		text-shadow: #778A79 1px 1px 3px;	
 	}
 	
