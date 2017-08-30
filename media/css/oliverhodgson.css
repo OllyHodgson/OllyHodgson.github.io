@@ -190,7 +190,7 @@ The nav.
 		}
 		#nav ul li a.current {
 			background-color: #6B7B6D;
-			background-image: linear-gradient(to top, #6B7B6D, transparent 25%);
+			background-image: linear-gradient(to top, #6B7B6D, #899B8B 33%);
 			
 			margin-bottom: -1px;
 			padding-bottom: 0;
@@ -214,7 +214,7 @@ The content.
 .content-container {
 	display: flex;
 	justify-content: center;
-	background-image: linear-gradient(to bottom, #6B7B6D, transparent 25%);
+	background-image: linear-gradient(to bottom, #6B7B6D, #899B8B 33%);
 }
 
 .content {
