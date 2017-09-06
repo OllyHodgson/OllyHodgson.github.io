@@ -96,37 +96,38 @@ The header.
 
 ******************** */
 
-#header {
+.header {
+	display: block;
 	padding: 25px;
 	line-height: 1;
 }
-#header h1,
-#header h2 {
+.header h1,
+.header h2 {
 	text-align: center;
 }
-#header h1 {
+.header h1 {
 	margin: 0;
 	font-size: 2.4em;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 }
-#header h2 {
+.header h2 {
 	margin: 0;
 	font-size: 1em;
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 }
 @media (min-width: 600px) {
-	#header {
+	.header {
 		padding: 50px 60px;
 	}
-	#header h1 {
+	.header h1 {
 		font-size: 3em;
 	}
-	#header h2 {
+	.header h2 {
 		font-size: 1.5em;
 	}
 }
 @media (min-width: 1200px) {
-	#header h1 {
+	.header h1 {
 		font-size: 4em;
 	}
 }
@@ -137,7 +138,7 @@ The nav.
 
 ******************** */
 
-#nav {
+.primary-nav {
 	font-size: 1.5em;
 	display: flex;
 	justify-content: center;
@@ -145,19 +146,19 @@ The nav.
 	margin: 0 auto;
 }
 @media (min-width: 580px) {
-	#nav {
+	.primary-nav {
 		font-size: 2em;
 	}
 }
 
-	#nav ul {
+	.primary-nav ul {
 		flex-basis: auto;
 		list-style: none;
 		margin: 0;
 		padding-left: 0;
 	}
 	
-		#nav ul li {
+		.primary-nav ul li {
 			float: left;
 
 			list-style: none;
@@ -165,7 +166,7 @@ The nav.
 			padding: 0;
 
 		}
-		#nav ul li a {
+		.primary-nav ul li a {
 			display: block;
 			min-width: 125px;
 			padding: 0 10px;
@@ -180,20 +181,20 @@ The nav.
 			position: relative;
 			top: 1px;
 		}
-		#nav ul li a.current {
-			background-color: #6B7B6D;
-			background-image: linear-gradient(to bottom, #899B8B, #6B7B6D 50%);
+		.primary-nav ul li a.current {
+			background-color: #505E52;
+			background-image: linear-gradient(to bottom, #899B8B, #505E52 50%);
 			
 			margin-bottom: -1px;
 			padding-bottom: 0;
 			border: 1px solid #606D62;	
-			border-bottom: 1px solid #6B7B6D;
+			border-bottom-color: #505E52;
 			
 			text-shadow: #454E46 1px 1px 3px;
 			
 			top: 0;
 		}
-		#nav ul li a.current:hover {
+		.primary-nav ul li a.current:hover {
 			cursor: default;
 		}
 	
@@ -206,7 +207,7 @@ The content.
 .content-container {
 	display: flex;
 	justify-content: center;
-	background-image: linear-gradient(to bottom, #6B7B6D, #899B8B 33%);
+	background-image: linear-gradient(to bottom, #505E52, #899B8B 75%);
 }
 
 .content {
