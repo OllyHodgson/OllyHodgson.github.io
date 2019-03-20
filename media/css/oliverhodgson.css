@@ -5,64 +5,93 @@
 OK, lets start with some of my styles
 
 ******************** */
-body {
-	background-color: #899B8B;
-	/*background-image: url(../images/bg_vert_rhythm.gif);*/
-	background-position: top left;
-	background-repeat: repeat;
-	
-	color: #FFFFFF;
-
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	font-weight: 300;
-	font-size: 18px;
-	
-	text-transform: uppercase;	
-	line-height: 1.6;
+* {
+  box-sizing: border-box;
 }
 
+*:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #899b8b;
+  background-image: url(../images/bg_header_mw_500.jpg);
+  background-position: center left;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+  color: #ffffff;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+
+  text-transform: uppercase;
+  line-height: 1.6;
+
+  padding: 0 1rem;
+}
+
+@media (min-width: 500px) {
+  body {
+    font-size: 1.125rem;
+    padding: 1rem;
+    background-image: url(../images/bg_header_mw_1000.jpg);
+  }
+}
+@media (min-width: 1000px) {
+  body {
+    padding: 2rem;
+    background-image: url(../images/bg_header.jpg);
+  }
+}
 h1,
 h2 {
-	font-weight: 400;
-	font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	letter-spacing: -0.03em;
+  font-weight: 400;
+  font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.03em;
 }
 
 abbr,
 abbr[title] {
-	cursor: help;
-	padding: 1px;
-	border-bottom: none;
-	text-decoration: none;
+  cursor: help;
+  padding: 1px;
+  border-bottom: none;
+  text-decoration: none;
 }
 abbr[title]:hover,
 abbr[title]:focus {
-	border-bottom: 1px dotted #617163;
+  border-bottom: 1px dotted #617163;
 }
 
 a {
-	color: #FFFFFF;
-	background-color: #7C8C7F;
-	text-decoration: none;
-	
-	padding: 0px 4px;
-	
-	border: 1px solid #7C8C7F;
-	
-	border-top-left-radius: 4px;
-	border-bottom-right-radius: 4px;
+  color: #ffffff;
+  background-color: #7c8c7f;
+  text-decoration: none;
+
+  padding: 0px 4px;
+
+  border: 1px solid #7c8c7f;
+
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
+/*
 a:visited {
 }
+*/
 a:hover,
 a:active,
 a:focus {
-	background-color: #617163;
-	border-color: #617163;
-	text-shadow: #454E46 1px 1px 3px;
+  background-color: #617163;
+  border-color: #617163;
+  text-shadow: #454e46 1px 1px 3px;
 }
 a:active {
-	outline: 1px dotted #617163;
+  outline: 1px dotted #617163;
 }
 
 /* ********************
@@ -70,134 +99,72 @@ a:active {
 This wraps header and nav
 
 ******************** */
-.header-container {
-	background-color: #899B8B;
-	background-image: url(../images/bg_header_mw_500.jpg);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-	background-size: cover;
-	border-bottom: 1px solid #606D62;
-}
-@media (min-width: 500px) {
-	.header-container {
-		background-image: url(../images/bg_header_mw_1000.jpg);
-	}
-}
-@media (min-width: 1000px) {
-	.header-container {
-		background-image: url(../images/bg_header.jpg);
-		background-position: center left;
-	}
-}
 
 /* ********************
 
 The header.
 
 ******************** */
-
+.header-container:before,
+.header-container:after {
+  content: " ";
+  display: table;
+}
+.header-container:after {
+  clear: both;
+}
 .header {
-	display: block;
-	padding: 25px;
-	line-height: 1;
+  display: block;
+  padding: 1rem 0;
+  line-height: 1;
 }
 .header h1,
 .header h2 {
-	text-align: center;
+  text-align: left;
 }
 .header h1 {
-	margin: 0;
-	font-size: 2.4em;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  margin: 0;
+  font-size: 2em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 }
 .header h2 {
-	margin: 0;
-	font-size: 1em;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  margin: 0;
+  font-size: 1em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+}
+.header .profile-shot {
+  float: right;
+  margin: 0 0 1rem 1rem;
+  border-radius: 50%;
+  border: 1px solid #606d62;
+  max-width: 50px;
+  height: auto;
+}
+@media (min-width: 400px) {
+  .header h1 {
+    font-size: 2.4em;
+  }
+  .header .profile-shot {
+    max-width: 65px;
+  }
 }
 @media (min-width: 600px) {
-	.header {
-		padding: 50px 60px;
-	}
-	.header h1 {
-		font-size: 3em;
-	}
-	.header h2 {
-		font-size: 1.5em;
-	}
+  .header {
+    padding: 50px 60px;
+  }
+  .header h1 {
+    font-size: 3em;
+  }
+  .header h2 {
+    font-size: 1.5em;
+  }
 }
 @media (min-width: 1200px) {
-	.header h1 {
-		font-size: 4em;
-	}
-}
-	
-/* ********************
-
-The nav.
-
-******************** */
-
-.primary-nav {
-	font-size: 1.5em;
-	display: flex;
-	justify-content: center;
-	max-width: 660px;
-	margin: 0 auto;
-}
-@media (min-width: 580px) {
-	.primary-nav {
-		font-size: 2em;
-	}
+  .header h1 {
+    font-size: 4em;
+  }
 }
 
-	.primary-nav ul {
-		flex-basis: auto;
-		list-style: none;
-		margin: 0;
-		padding-left: 0;
-	}
-	
-		.primary-nav ul li {
-			float: left;
-
-			list-style: none;
-			margin: 0;
-			padding: 0;
-
-		}
-		.primary-nav ul li a {
-			display: block;
-			min-width: 125px;
-			padding: 0 10px;
-			text-align: center;
-			
-			border: none;
-			border-radius: 5px 5px 0 0;
-			
-			font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-			text-transform: uppercase;
-			
-			position: relative;
-			top: 1px;
-		}
-		.primary-nav ul li a.current {
-			background-color: #505E52;
-			background-image: linear-gradient(to bottom, #899B8B, #505E52 50%);
-			
-			margin-bottom: -1px;
-			padding-bottom: 0;
-			border: 1px solid #606D62;	
-			border-bottom-color: #505E52;
-			
-			text-shadow: #454E46 1px 1px 3px;
-			
-			top: 0;
-		}
-		.primary-nav ul li a.current:hover {
-			cursor: default;
-		}
-	
 /* ********************
 
 The content.
@@ -205,85 +172,164 @@ The content.
 ******************** */
 
 .content-container {
-	display: flex;
-	justify-content: center;
-	background-image: linear-gradient(to bottom, #505E52, #899B8B 75%);
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .content {
-	flex-basis: 100%;
-	max-width: 660px;
-	padding: 25px;
+  flex-basis: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: rgba(82,94,80, 0.95);
+  border: 1px solid rgba(76, 83, 73, 0.95);
+  border-radius: 0.15rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.content .part1 {
+  flex-basis: 100%;
+  padding: 1rem 2rem 1rem 0;
+}
+.content .part2 {
+  flex-basis: 100%;
+  padding: 1rem 0 1rem 2rem;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.content .part2 p {
+  max-width: 37.5rem;
+}
+
+.content .part3 {
+  flex-basis: 100%;
+  padding: 1rem 0 1rem 2rem;
+  align-self: flex-end;
 }
 
 @media (min-width: 600px) {
-	.content {
-		padding: 25px 60px 0 60px;
-	}
+  .content {
+    flex-wrap: wrap;
+    padding: 2rem 60px;
+  }
+  .content .part1 {
+    flex-basis: calc(30% - 2.15rem);
+    border-right: 0.15rem solid white;
+  }
+  .content .part2 {
+    flex-basis: calc(660px - 2rem);
+  }
+  .content .part3 {
+    flex-basis: calc(20% - 2rem);
+  }
 }
 
-	.content h3,
-	.content h4,
-	.content p,
-	.content ul,
-	.content li {
-		font-size: 1em;
-		margin: 0;
-		padding: 0;
-	}
-	.content a,
-	.content a:link {
-		font-size: 1em;
-	}
-	
-	.content h3,
-	.content h4 {
-		font-weight: 600;
-		text-shadow: #778A79 1px 1px 3px;	
-	}
-	
+.content h3,
+.content h4,
+.content p {
+  font-size: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+.content a,
+.content a:link {
+  font-size: 1em;
+}
+.content h3,
+.content h4 {
+  font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
+  BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 1.25em;
+  line-height: 1.2;
+}
 
 @media (min-width: 600px) {
-	
-	.content h3.inline,
-	.content h4 {
-		float: left;
-		padding-left: 10px;
-		padding-right: 0.4em;		
-	}
-
+  .content h3,
+  .content h4 {
+    font-size: 1.5em;
+  }
 }
-	
-	.content p {
-		text-transform: none;
-		margin-bottom: 1.5em;
-	}
-	.content ul {
-		margin-top: 1.5em;
-	}
-	.content li {
-		list-style: none;
-		text-transform: none;
-		margin-bottom: 0.5em;
-	}
-		.content li a {
-			text-transform: uppercase;
-		}
 
-/*
-Hide the second pane on page load - as soon as we know there's JS available 
-*/
-.js .content:not(:first-child) {
-	display: none;
+.content p {
+  text-transform: none;
+  margin-bottom: 1.5em;
 }
-	
+.content p:last-child {
+  margin-bottom: 0;
+}
+
+.elsewhere {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  margin: 0 -1rem;
+  padding: 0;
+  list-style: none;
+}
+  .elsewhere-item {
+    flex-basis: calc(33% - 1rem);
+    padding: 0 1rem 1.5rem 1rem;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+  .elsewhere-item a {
+    flex-basis: auto;
+  }
+  .elsewhere-item span {
+    flex-basis: 100%;
+    margin-left: 1.5rem;
+    padding-top: 0.5rem;
+  }
+  .elsewhere-item span::before {
+    margin-left: -1.5rem;
+    content: '—';
+    display: inline-block;
+    width: 1.5rem;
+  }
+
+.vi-map {
+  width: 100%;
+  height: auto;
+}
+
 /* ********************
 
 The footer.
 
 ******************** */
 
-#footer {
-	clear: both;
-	border-top: 1px solid #899B8B;
+footer {
+  clear: both;
+  text-align: center;
+}
+
+/*
+.oh-transition-group {
+}
+*/
+.oh-transition {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 1.5s all ease-out;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.oh-transition-hidden {
+  opacity: 0;
+  transform: translateY(1rem);
 }
