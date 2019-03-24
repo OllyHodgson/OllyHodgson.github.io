@@ -528,12 +528,12 @@ footer {
 .olly-transition {
   opacity: 1;
   transform: translateY(0);
-  transition: 1.5s all ease-out;
+  transition: 0.5s all ease-out;
   transform-origin: bottom center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
 }
-.olly-transition-hidden {
+.js .olly-transition-hidden {
   opacity: 0;
-  transform: translateY(2rem);
+  transform: translateY(1rem);
 }
