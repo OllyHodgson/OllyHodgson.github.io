@@ -563,3 +563,10 @@ Lightbox button colours
   color: #617163;
   text-shadow: 0 0 5px #617163;
 }
+.with-featherlight .featherlight .featherlight-image {
+  margin-left: auto;
+  margin-right: auto;
+}
+.with-featherlight .featherlight .featherlight-content {
+  min-width: 300px;
+}
