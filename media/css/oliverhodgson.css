@@ -71,9 +71,7 @@ a {
   background-color: #7c8c7f;
   text-decoration: none;
 
-  margin: 0 0.25rem;
-  padding: 0;
-  box-shadow: 0.25rem 0 #7c8c7f, -0.25rem 0 #7c8c7f;
+  padding: 0 0.25rem;
 
   border: 0.0625rem solid #7c8c7f;
 
@@ -90,7 +88,6 @@ a:focus {
   background-color: #617163;
   border-color: #617163;
   text-shadow: #454e46 1px 1px 3px;
-  box-shadow: 0.25rem 0 #617163, -0.25rem 0 #617163;
 }
 a:active {
   outline: 1px dotted #617163;
@@ -100,11 +97,22 @@ a.cta {
   padding: 6px 12px;
 }
 
-/* ********************
-
-This wraps header and nav
-
-******************** */
+a.image {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border-color: transparent;
+  background-color: transparent;
+}
+a.image:hover,
+a.image:active,
+a.image:focus {
+  background-color: #617163;
+  border-color: #617163;
+}
+a.image img {
+  vertical-align: bottom;
+}
 
 /* ********************
 
@@ -193,7 +201,7 @@ The content.
   flex-basis: 100%;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  background-color: rgba(82, 94, 80, 0.95);
+  background-color: rgba(82, 94, 80, 0.85);
   border: 1px solid rgba(76, 83, 73, 0.95);
   border-radius: 0.15rem;
 
@@ -342,6 +350,10 @@ The content.
     grid-template-rows: 1fr auto;
     grid-template-areas: "Title Intro Island" "Title Gallery Gallery";
   }
+}
+
+.content.content-one {
+  display: block;
 }
 
 .elsewhere {
@@ -499,7 +511,7 @@ footer {
     background-size: 618px 100px;
   }
 }
-@media (min-width: 700px) {
+@media (min-width: 700px) and (min-height: 300px) {
   footer {
     margin-bottom: 175px;
   }
@@ -508,7 +520,7 @@ footer {
     background-size: 1081px 175px;
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 500px) {
   footer {
     margin-bottom: 200px;
   }
