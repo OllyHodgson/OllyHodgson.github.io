@@ -7,7 +7,6 @@ OK, lets start with some of my styles
 ******************** */
 * {
   box-sizing: border-box;
-  transition: all 0.25s ease-out;
 }
 
 *:before,
