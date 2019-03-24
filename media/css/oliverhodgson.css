@@ -554,3 +554,12 @@ footer {
   opacity: 0;
   transform: translateY(1rem);
 }
+
+/*
+Lightbox button colours
+*/
+.with-featherlight .featherlight-next span,
+.with-featherlight .featherlight-previous span {
+  color: #617163;
+  text-shadow: 0 0 5px #617163;
+}
