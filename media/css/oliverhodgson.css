@@ -71,12 +71,14 @@ a {
   background-color: #7c8c7f;
   text-decoration: none;
 
-  padding: 0px 4px;
+  margin: 0 0.25rem;
+  padding: 0;
+  box-shadow: 0.25rem 0 #7c8c7f, -0.25rem 0 #7c8c7f;
 
-  border: 1px solid #7c8c7f;
+  border: 0.0625rem solid #7c8c7f;
 
-  border-top-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-top-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 /*
 a:visited {
@@ -88,6 +90,7 @@ a:focus {
   background-color: #617163;
   border-color: #617163;
   text-shadow: #454e46 1px 1px 3px;
+  box-shadow: 0.25rem 0 #617163, -0.25rem 0 #617163;
 }
 a:active {
   outline: 1px dotted #617163;
@@ -199,23 +202,40 @@ The content.
   grid-template-rows: auto 1fr;
   grid-template-areas: "Title" "Intro";
 }
+
+.content .part1 {
+  grid-area: Title;
+}
+.content .part2 {
+  grid-area: Intro;
+}
+.content .part3 {
+  grid-area: Island;
+}
+.content .part4 {
+  grid-area: Gallery;
+}
+
 .content .part1 {
   border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.5);
   padding: 0 0 1rem;
 }
 .content .part2 {
   padding: 1rem 0;
-  flex-grow: 1;
-  flex-shrink: 1;
 }
 .content .part2 p {
   max-width: 37.5rem;
 }
 .content .part3 {
-  flex-basis: 100%;
-  max-width: 250px;
-  padding: 1rem 1rem 0;
-  margin: 0 1rem 0 auto;
+  margin: 0 2rem;
+  padding: 1rem 0;
+}
+
+@media (min-width: 450px) {
+  .content .part3 {
+    margin: 0 auto;
+    max-width: 200px;
+  }
 }
 
 @media (min-width: 750px) {
@@ -232,6 +252,9 @@ The content.
   }
   .content .part2 {
     padding: 1rem 2rem;
+  }
+  .content .part3 {
+    margin: 0 2rem 0 auto;
   }
 }
 
@@ -282,23 +305,6 @@ The content.
   grid-template-rows: auto 1fr auto;
   grid-template-areas: "Title" "Island" "Intro";
 }
-.content .part1 {
-  grid-area: Title;
-}
-.content .part2 {
-  grid-area: Intro;
-}
-.content .part3 {
-  grid-area: Island;
-}
-.content .part4 {
-  grid-area: Gallery;
-}
-.content .part3 {
-  margin: 0 auto;
-  padding: 1rem 0 0 0;
-  max-width: 200px;
-}
 @media (min-width: 450px) {
   .content.content-three {
     grid-template-columns: 2fr 1fr;
@@ -329,7 +335,7 @@ The content.
 .content.content-four .part4 {
   margin: 0;
 }
-@media (min-width: 450px) {
+@media (min-width: 750px) {
   .content.content-four {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
