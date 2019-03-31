@@ -196,7 +196,7 @@ The content.
 }
 @media (min-width: 1000px) {
   .content-container {
-    padding: 0 2rem 2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -487,8 +487,13 @@ The footer.
 footer {
   clear: both;
   text-align: center;
+  margin-bottom: 60px;
+}
 
-  margin-bottom: 57px;
+.credits {
+  font-size: 0.75rem;
+  margin: 0 auto;
+  padding-bottom: 1rem;
 }
 
 .decorative {
