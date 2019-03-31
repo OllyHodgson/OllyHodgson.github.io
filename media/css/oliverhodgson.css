@@ -67,15 +67,18 @@ abbr[title]:focus {
 
 a {
   color: #ffffff;
-  background-color: #7c8c7f;
+  background-color: rgba(76, 83, 73, 0.95);
   text-decoration: none;
 
-  padding: 0 0.25rem;
+  padding: 0 0.25rem 0.15rem;
 
-  border: 0.0625rem solid #7c8c7f;
+  border-color: rgba(255, 255, 255, 0.5);
+  border-width: 0 0 2px 0;
+  border-style: solid;
 
-  border-top-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+  border-radius: 0.25rem;
+
+  transition: 0.25s all ease-in-out;
 }
 /*
 a:visited {
@@ -85,7 +88,7 @@ a:hover,
 a:active,
 a:focus {
   background-color: #617163;
-  border-color: #617163;
+  border-color: rgba(255, 255, 255, 0.25);
   text-shadow: #454e46 1px 1px 3px;
 }
 a:active {
@@ -94,6 +97,7 @@ a:active {
 
 a.cta {
   padding: 6px 12px;
+  border-right-width: 1px;
 }
 
 a.image {
@@ -381,6 +385,7 @@ The content.
   flex-basis: auto;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  border-right-width: 1px;
 }
 .elsewhere-item span {
   flex-basis: 100%;
