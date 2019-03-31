@@ -496,6 +496,10 @@ footer {
   padding-bottom: 1rem;
 }
 
+.credits a {
+  border-bottom-width: 1px;
+}
+
 .decorative {
   display: block;
   opacity: 0.9;
