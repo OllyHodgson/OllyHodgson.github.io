@@ -94,12 +94,11 @@ a:focus {
 a:active {
   outline: 1px dotted #617163;
 }
-
 a.cta {
+  white-space: nowrap;
   padding: 6px 12px;
   border-right-width: 1px;
 }
-
 a.image {
   display: block;
   padding: 0;
@@ -304,7 +303,6 @@ The content.
 .content p:last-child {
   margin-bottom: 0;
 }
-
 .content img {
   max-width: 100%;
   height: auto;
@@ -451,6 +449,11 @@ The content.
     margin-right: -2rem;
     width: calc(100% + 4rem);
   }
+}
+
+/* Stop buttons overlapping when they break */
+.toolbar {
+  line-height: 2.25;
 }
 
 .gallery {
