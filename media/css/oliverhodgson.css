@@ -443,13 +443,6 @@ The content.
   background-size: 136px 32px, auto;
   background-repeat: repeat-x, repeat-x;
 }
-@media (min-width: 1000px) {
-  .separator {
-    margin-left: -2rem;
-    margin-right: -2rem;
-    width: calc(100% + 4rem);
-  }
-}
 
 /* Stop buttons overlapping when they break */
 .toolbar {
