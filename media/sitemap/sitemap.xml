@@ -4,16 +4,24 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
 
 <url>
-  <loc>http://oliverhodgson.com/</loc>
-  <priority>1</priority>
-  <lastmod>2018-07-15T01:34:02+00:00</lastmod>
-  <changefreq>monthly</changefreq>
+  <loc>https://oliverhodgson.com/</loc>
+  <lastmod>2019-03-25T18:35:08+00:00</lastmod>
+  <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://oliverhodgson.com/media/documents/OliverHodgson.pdf</loc>
-  <priority>1</priority>
-  <changefreq>monthly</changefreq>
+  <loc>https://oliverhodgson.com/portfolio.html</loc>
+  <lastmod>2019-03-25T18:35:08+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://oliverhodgson.com/media/documents/OliverHodgson.pdf</loc>
+  <lastmod>2019-03-25T18:35:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
 </urlset>

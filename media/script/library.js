@@ -70,8 +70,8 @@ jQuery.expr.pseudos.offscreen = function(el) {
 
   // These are the defaults.
   $.fn.ollyTransitionItems.defaults = {
-    timeout: 750,
-    timeoutIncrement: 250,
+    timeout: 0,
+    timeoutIncrement: 0,
     itemSelector: ".olly-transition",
     itemHiddenSelector: ".olly-transition-hidden"
   };

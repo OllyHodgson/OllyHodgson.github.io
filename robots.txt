@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://ollyhodgson.github.io/media/sitemap/sitemap.xml 
+Sitemap: https://oliverhodgson.com/media/sitemap/sitemap.xml
