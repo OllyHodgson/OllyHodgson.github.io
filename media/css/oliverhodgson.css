@@ -48,7 +48,7 @@ body {
 h1,
 h2 {
   font-weight: 400;
-  font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
+  font-family: "Oswald", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   letter-spacing: -0.03em;
 }
@@ -282,7 +282,7 @@ The content.
 }
 .content h3,
 .content h4 {
-  font-family: "Ropa Sans", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
+  font-family: "Oswald", "Lucida Sans", "Lucida Sans Unicode", -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 300;
   font-size: 1.25em;
