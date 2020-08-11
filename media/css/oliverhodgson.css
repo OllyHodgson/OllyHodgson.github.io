@@ -461,6 +461,9 @@ The content.
   padding: 1rem;
 }
 @media (min-width: 750px) {
+  .gallery {
+    flex-wrap: nowrap;
+  }
   .gallery li {
     flex-basis: 33.333333%;
   }
