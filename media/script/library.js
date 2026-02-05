@@ -1,111 +1,352 @@
-/*global $*/
-/*global jQuery*/
-
-// Custom selector to find if something is in the viewport
-// Adapted from https://stackoverflow.com/a/8897628/13019
-jQuery.expr.pseudos.offscreen = function(el) {
-  var rect = el.getBoundingClientRect();
-  return (
-    rect.x + rect.width < 0 ||
-    rect.y + rect.height < 0 ||
-    (rect.x > window.innerWidth || rect.y > window.innerHeight)
-  );
-};
-
-/*
- * ollyTransition plugin
- * Olly Hodgson, still writing jQuery plugins in November 2018
+/**
+ * Olly Hodgson's site scripts - vanilla JS edition
+ * Refactored in February 2026 to remove jQuery dependency
  *
- * Usage:
- *
- * Add class="olly-transition olly-transition-hidden" to the elements you want to fade in
- * Add class="olly-transition-group" to their parent element
- *
- * Optionally, add data-timeout="1000" data-timeout-increment="500" (you can change the numbers)
- * to the olly-transition-group element to provide a custom delay to the transitions
- *
- * You define the actual transitions in your CSS, e.g.
- *
- * .example-element.olly-transition {
- *     opacity: 1;
- *     transition: all 0.5s ease-out;
- * }
- * .example-element.olly-transition-hidden {
- *     opacity: 0;
- * }
- *
+ * Uses modern browser features:
+ * - IntersectionObserver for efficient scroll-based transitions
+ * - Native DOM methods
+ * - ES6+ syntax
  */
-(function($) {
+
+(function () {
   "use strict";
 
-  // Set up the accordion navigation
-  $.fn.ollyTransitionItems = function(options) {
-    // This is the easiest way to have default options.
-    var settings = $.extend({}, $.fn.ollyTransitionItems.defaults, options);
-    var $groups = $(this);
-    $groups.each(function() {
-      var $group = $(this);
-      var customTimeout = $group.data("timeout");
-      var customTimeoutIncrement = $group.data("timeoutIncrement");
-      if (customTimeout !== undefined && customTimeout !== "") {
-        settings.timeout = customTimeout;
-      }
-      if (
-        customTimeoutIncrement !== undefined &&
-        customTimeoutIncrement !== ""
-      ) {
-        settings.timeoutIncrement = customTimeoutIncrement;
-      }
-      var items = $group
-        .find(settings.itemSelector)
-        .filter(settings.itemHiddenSelector);
-      // Do the transition immediately for things which are on screen
-      doTransition(settings, items);
-      // Do the transition on scroll for things which are not on screen
-      $(window).scroll(function() {
-        doTransition(settings, items);
-      });
-    });
-  };
+  /* ********************
+   * Scroll-based transitions using IntersectionObserver
+   *
+   * Usage:
+   * Add class="olly-transition olly-transition-hidden" to elements you want to fade in
+   * Add class="olly-transition-group" to their parent element
+   *
+   * Optionally, add data-timeout="1000" data-timeout-increment="500"
+   * to the olly-transition-group element for custom delay timing
+   ******************** */
 
-  // These are the defaults.
-  $.fn.ollyTransitionItems.defaults = {
+  const defaults = {
     timeout: 0,
     timeoutIncrement: 0,
     itemSelector: ".olly-transition",
-    itemHiddenSelector: ".olly-transition-hidden"
+    hiddenClass: "olly-transition-hidden",
   };
 
-  // This removes the settings.itemHiddenSelector class from the elements in items after settings.timeout is reached
-  // If there is more than one element, it'll loop through them, starting the next one after settings.timeout + settings.timeoutIncrement is reached
-  function doTransition(settings, items) {
-    var timeout = settings.timeout;
-    for (var i = 0; i < items.length; i++) {
-      // :offscreen is a custom selector, see custom.js
-      if (!$(items[i]).is(":offscreen")) {
-        timeout = timeout + settings.timeoutIncrement;
-        //console.info(i, items[i], timeout);
-        setTimeout(showItem, timeout, items[i], settings.itemHiddenSelector);
+  function initTransitionGroup(group) {
+    const timeout = parseInt(group.dataset.timeout, 10) || defaults.timeout;
+    const timeoutIncrement =
+      parseInt(group.dataset.timeoutIncrement, 10) || defaults.timeoutIncrement;
+
+    const items = group.querySelectorAll(
+      `${defaults.itemSelector}.${defaults.hiddenClass}`
+    );
+
+    if (!items.length) return;
+
+    // Pre-assign delays based on DOM order for consistent staggering
+    const itemDelays = new Map();
+    items.forEach((item, index) => {
+      itemDelays.set(item, timeout + index * timeoutIncrement);
+    });
+
+    // Feature detection: graceful degradation for older browsers
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: show all items immediately
+      items.forEach((item) => {
+        const delay = itemDelays.get(item) || timeout;
+        setTimeout(() => {
+          item.classList.remove(defaults.hiddenClass);
+        }, delay);
+      });
+      return;
+    }
+
+    // Use IntersectionObserver for efficient viewport detection
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const delay = itemDelays.get(el) || timeout;
+            setTimeout(() => {
+              el.classList.remove(defaults.hiddenClass);
+            }, delay);
+            // Stop observing once revealed
+            observer.unobserve(el);
+          }
+        });
+      },
+      {
+        rootMargin: "0px",
+        threshold: 0.1,
       }
-    }
+    );
+
+    items.forEach((item) => observer.observe(item));
   }
 
-  // Remove the className, which (via the magic of CSS transition) shows the item(s)
-  function showItem(el, selector) {
-    //console.info(el, selector);
-    if (selector.charAt(0) === ".") {
-      selector = selector.substr(1);
-    }
-    $(el).removeClass(selector);
+  function initTransitions() {
+    const groups = document.querySelectorAll(".olly-transition-group");
+    groups.forEach(initTransitionGroup);
   }
-})(jQuery);
 
-/* ********************
+  /* ********************
+   * Simple lightbox for image galleries
+   * Replaces Featherlight - works with existing HTML structure
+   *
+   * Usage:
+   * Add data-featherlight-gallery to container
+   * Add data-featherlight-filter="a.image" to specify gallery links
+   * Links should be <a class="image" href="large-image.jpg">
+   ******************** */
 
-The onload function.
+  let lightbox = null;
+  let currentGallery = []; // Array of { src, alt } objects
+  let currentIndex = 0;
 
-******************** */
+  function createLightbox() {
+    if (lightbox) return lightbox;
 
-$(document).ready(function() {
-  $(".olly-transition-group").ollyTransitionItems();
-});
+    const overlay = document.createElement("div");
+    overlay.className = "lightbox-overlay";
+    overlay.innerHTML = `
+      <div class="lightbox-content">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <button class="lightbox-prev" aria-label="Previous">&lsaquo;</button>
+        <button class="lightbox-next" aria-label="Next">&rsaquo;</button>
+        <img class="lightbox-image" src="" alt="" />
+      </div>
+    `;
+
+    // Add styles
+    const style = document.createElement("style");
+    style.textContent = `
+      .lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .lightbox-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .lightbox-content {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+      }
+      .lightbox-image {
+        max-width: 90vw;
+        max-height: 90vh;
+        display: block;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .lightbox-image.loaded {
+        opacity: 1;
+      }
+      .lightbox-image.error {
+        opacity: 1;
+        min-width: 200px;
+        min-height: 100px;
+      }
+      .lightbox-close,
+      .lightbox-prev,
+      .lightbox-next {
+        position: fixed;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 2.5rem;
+        cursor: pointer;
+        padding: 1rem;
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+        z-index: 10001;
+      }
+      .lightbox-close:hover,
+      .lightbox-prev:hover,
+      .lightbox-next:hover {
+        opacity: 1;
+      }
+      .lightbox-close {
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+      .lightbox-prev {
+        left: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lightbox-next {
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lightbox-prev[hidden],
+      .lightbox-next[hidden] {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(overlay);
+
+    // Event handlers
+    const closeBtn = overlay.querySelector(".lightbox-close");
+    const prevBtn = overlay.querySelector(".lightbox-prev");
+    const nextBtn = overlay.querySelector(".lightbox-next");
+    const img = overlay.querySelector(".lightbox-image");
+
+    closeBtn.addEventListener("click", closeLightbox);
+    prevBtn.addEventListener("click", showPrev);
+    nextBtn.addEventListener("click", showNext);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!overlay.classList.contains("active")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+
+    // Touch swipe support for mobile/touch devices
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const SWIPE_THRESHOLD = 50;
+
+    overlay.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      },
+      { passive: true }
+    );
+
+    overlay.addEventListener(
+      "touchend",
+      (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Only trigger if horizontal swipe is greater than vertical (not a scroll)
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > SWIPE_THRESHOLD) {
+          if (diffX > 0) {
+            showPrev();
+          } else {
+            showNext();
+          }
+        }
+      },
+      { passive: true }
+    );
+
+    lightbox = { overlay, img, prevBtn, nextBtn };
+    return lightbox;
+  }
+
+  function openLightbox(gallery, index) {
+    const lb = createLightbox();
+    currentGallery = gallery;
+    currentIndex = index;
+    showImage();
+    lb.overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.overlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  function showImage() {
+    if (!lightbox || !currentGallery.length) return;
+    const item = currentGallery[currentIndex];
+
+    // Reset loading/error state
+    lightbox.img.classList.remove("loaded", "error");
+
+    // Set up load and error handlers before assigning src
+    lightbox.img.onload = () => {
+      lightbox.img.classList.add("loaded");
+    };
+    lightbox.img.onerror = () => {
+      lightbox.img.classList.add("error");
+      lightbox.img.alt = "Image failed to load";
+    };
+
+    lightbox.img.src = item.src;
+    lightbox.img.alt = item.alt || "Enlarged gallery image";
+
+    // Show/hide nav buttons
+    const isGallery = currentGallery.length > 1;
+    lightbox.prevBtn.hidden = !isGallery;
+    lightbox.nextBtn.hidden = !isGallery;
+  }
+
+  function showPrev() {
+    if (currentGallery.length <= 1) return;
+    currentIndex =
+      (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+    showImage();
+  }
+
+  function showNext() {
+    if (currentGallery.length <= 1) return;
+    currentIndex = (currentIndex + 1) % currentGallery.length;
+    showImage();
+  }
+
+  function initGalleries() {
+    const galleries = document.querySelectorAll("[data-featherlight-gallery]");
+
+    galleries.forEach((gallery) => {
+      const filter = gallery.dataset.featherlightFilter || "a.image";
+      const links = gallery.querySelectorAll(filter);
+
+      // Extract src and alt text from each link's thumbnail image
+      const items = Array.from(links).map((link) => {
+        const img = link.querySelector("img");
+        return {
+          src: link.href,
+          alt: img ? img.alt : "",
+        };
+      });
+
+      links.forEach((link, index) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          openLightbox(items, index);
+        });
+      });
+    });
+  }
+
+  /* ********************
+   * Initialize everything on DOMContentLoaded
+   ******************** */
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  function init() {
+    initTransitions();
+    initGalleries();
+  }
+})();
