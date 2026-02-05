@@ -40,9 +40,23 @@
 
     if (!items.length) return;
 
-    // Track delay for staggered animations within this group
-    let currentDelay = timeout;
+    // Pre-assign delays based on DOM order for consistent staggering
     const itemDelays = new Map();
+    items.forEach((item, index) => {
+      itemDelays.set(item, timeout + index * timeoutIncrement);
+    });
+
+    // Feature detection: graceful degradation for older browsers
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: show all items immediately
+      items.forEach((item) => {
+        const delay = itemDelays.get(item) || timeout;
+        setTimeout(() => {
+          item.classList.remove(defaults.hiddenClass);
+        }, delay);
+      });
+      return;
+    }
 
     // Use IntersectionObserver for efficient viewport detection
     const observer = new IntersectionObserver(
@@ -50,12 +64,7 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const el = entry.target;
-            // Assign delay if not already assigned
-            if (!itemDelays.has(el)) {
-              itemDelays.set(el, currentDelay);
-              currentDelay += timeoutIncrement;
-            }
-            const delay = itemDelays.get(el);
+            const delay = itemDelays.get(el) || timeout;
             setTimeout(() => {
               el.classList.remove(defaults.hiddenClass);
             }, delay);
@@ -89,7 +98,7 @@
    ******************** */
 
   let lightbox = null;
-  let currentGallery = [];
+  let currentGallery = []; // Array of { src, alt } objects
   let currentIndex = 0;
 
   function createLightbox() {
@@ -142,6 +151,11 @@
       }
       .lightbox-image.loaded {
         opacity: 1;
+      }
+      .lightbox-image.error {
+        opacity: 1;
+        min-width: 200px;
+        min-height: 100px;
       }
       .lightbox-close,
       .lightbox-prev,
@@ -260,10 +274,22 @@
 
   function showImage() {
     if (!lightbox || !currentGallery.length) return;
-    const src = currentGallery[currentIndex];
-    lightbox.img.classList.remove("loaded");
-    lightbox.img.src = src;
-    lightbox.img.onload = () => lightbox.img.classList.add("loaded");
+    const item = currentGallery[currentIndex];
+
+    // Reset loading/error state
+    lightbox.img.classList.remove("loaded", "error");
+
+    // Set up load and error handlers before assigning src
+    lightbox.img.onload = () => {
+      lightbox.img.classList.add("loaded");
+    };
+    lightbox.img.onerror = () => {
+      lightbox.img.classList.add("error");
+      lightbox.img.alt = "Image failed to load";
+    };
+
+    lightbox.img.src = item.src;
+    lightbox.img.alt = item.alt || "Enlarged gallery image";
 
     // Show/hide nav buttons
     const isGallery = currentGallery.length > 1;
@@ -290,12 +316,20 @@
     galleries.forEach((gallery) => {
       const filter = gallery.dataset.featherlightFilter || "a.image";
       const links = gallery.querySelectorAll(filter);
-      const srcs = Array.from(links).map((link) => link.href);
+
+      // Extract src and alt text from each link's thumbnail image
+      const items = Array.from(links).map((link) => {
+        const img = link.querySelector("img");
+        return {
+          src: link.href,
+          alt: img ? img.alt : "",
+        };
+      });
 
       links.forEach((link, index) => {
         link.addEventListener("click", (e) => {
           e.preventDefault();
-          openLightbox(srcs, index);
+          openLightbox(items, index);
         });
       });
     });
