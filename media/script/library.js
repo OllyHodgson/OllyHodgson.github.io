@@ -205,6 +205,40 @@
       if (e.key === "ArrowRight") showNext();
     });
 
+    // Touch swipe support for mobile/touch devices
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const SWIPE_THRESHOLD = 50;
+
+    overlay.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      },
+      { passive: true }
+    );
+
+    overlay.addEventListener(
+      "touchend",
+      (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Only trigger if horizontal swipe is greater than vertical (not a scroll)
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > SWIPE_THRESHOLD) {
+          if (diffX > 0) {
+            showPrev();
+          } else {
+            showNext();
+          }
+        }
+      },
+      { passive: true }
+    );
+
     lightbox = { overlay, img, prevBtn, nextBtn };
     return lightbox;
   }
